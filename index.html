@@ -516,7 +516,15 @@ img{max-width:100%;display:block}
     </div>
   </section>
 
-  <!-- ===== 三、研究库 ===== -->
+  <!-- ===== 三、新增主题 ===== -->
+  <section class="hot-section" id="newSection" style="display:none">
+    <h2 class="sec-title">✨ 新增主题</h2>
+    <div class="hot-bg">
+      <div class="hot-scroll" id="newTopics"><!-- JS 动态渲染 --></div>
+    </div>
+  </section>
+
+  <!-- ===== 四、研究库 ===== -->
   <section>
     <h2 class="sec-title">📚 研究库</h2>
     <div class="filter-panel">
@@ -752,22 +760,33 @@ function renderTeam() {
   window._syncTeamCards = updateTeamFiltered;
 }
 
-/* 热门主题 —— 取 TOPICS 中 hot:true，NEW 优先，最多8个 */
+/* 热门主题 —— 仅 hot:true 且非 NEW */
 function renderHotTopics() {
   const container = $('#hotTopics');
-  const hotTopics = TOPICS.filter(t => t.hot || t.isNew);
-  /* NEW 的排最前面 */
-  hotTopics.sort((a, b) => (b.isNew ? 1 : 0) - (a.isNew ? 1 : 0));
-  const display = hotTopics.slice(0, 8);
+  const topics = TOPICS.filter(t => t.hot && !t.isNew);
+  renderTopicCards(container, topics);
+}
+
+/* 新增主题 —— isNew:true */
+function renderNewTopics() {
+  const container = $('#newTopics');
+  const topics = TOPICS.filter(t => t.isNew);
+  const section = $('#newSection');
+  if (topics.length === 0) { section.style.display = 'none'; return; }
+  section.style.display = '';
+  renderTopicCards(container, topics);
+}
+
+/* 通用：渲染热门/新增卡片 */
+function renderTopicCards(container, topics) {
   const catIcons = { '宏观经济':'📊', '资产配置':'📈', '固定收益':'💰', '海外宏观':'🌐', '可转债':'🔄' };
-  container.innerHTML = display.map(t => `
+  container.innerHTML = topics.map(t => `
     <div class="hot-card${t.isNew ? ' new' : ''}" data-id="${t.id}" data-cat="${t.category}">
       <div class="hot-icon">${t.isNew ? '<span class="hot-new-icon">NEW</span>' : (catIcons[t.category] || '📌')}</div>
       <div class="hot-theme">${t.title}</div>
     </div>
   `).join('');
 
-  /* 点击 → 仅展示该条 + 推可能感兴趣的主题 */
   container.querySelectorAll('.hot-card').forEach(card => {
     card.addEventListener('click', () => {
       const cat = card.dataset.cat;
@@ -775,8 +794,7 @@ function renderHotTopics() {
       const topic = TOPICS.find(t => t.id === tid);
       if (!topic) return;
       const wasActive = card.classList.contains('active');
-      /* 取消所有高亮 */
-      container.querySelectorAll('.hot-card.active').forEach(c => c.classList.remove('active'));
+      document.querySelectorAll('.hot-card.active').forEach(c => c.classList.remove('active'));
       if (wasActive) {
         state.selectedCategories.clear();
         state.hotPinnedId = null;
@@ -1076,6 +1094,7 @@ backToTop.addEventListener('click', () => {
 function init() {
   renderTeam();
   renderHotTopics();
+  renderNewTopics();
   setupHotScroll();
   renderCategoryTags();
   resetAndRender();
@@ -1085,6 +1104,9 @@ function init() {
   const ft = document.querySelector('.filter-tags');
   if (fs) makeScrollable(fs);
   if (ft) makeScrollable(ft);
+  /* 新增主题也横向滚动 */
+  const nt = $('#newTopics');
+  if (nt) makeScrollable(nt);
 }
 init();
 </script>
