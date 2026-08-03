@@ -759,7 +759,7 @@ function renderTeam() {
 /* 热门主题 —— 仅 hot:true 且非 NEW */
 function renderHotTopics() {
   const container = $('#hotTopics');
-  const topics = TOPICS.filter(t => t.hot && !t.isNew);
+  const topics = TOPICS.filter(t => t.hot);
   renderTopicCards(container, topics);
 }
 
