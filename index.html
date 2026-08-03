@@ -515,15 +515,23 @@ img{max-width:100%;display:block}
     </div>
   </section>
 
-  <!-- ===== 三、新增主题 ===== -->
-  <section class="hot-section" id="newSection" style="display:none">
+  <!-- ===== 三、深度研究 ===== -->
+  <section class="hot-section" id="deepSection" style="display:none">
     <h2 class="sec-title">🔬 深度研究</h2>
+    <div class="hot-bg">
+      <div class="hot-scroll" id="deepTopics"><!-- JS 动态渲染 --></div>
+    </div>
+  </section>
+
+  <!-- ===== 四、新增主题 ===== -->
+  <section class="hot-section" id="newSection" style="display:none">
+    <h2 class="sec-title">🆕 新增主题</h2>
     <div class="hot-bg">
       <div class="hot-scroll" id="newTopics"><!-- JS 动态渲染 --></div>
     </div>
   </section>
 
-  <!-- ===== 四、研究库 ===== -->
+  <!-- ===== 五、研究库 ===== -->
   <section>
     <h2 class="sec-title">📚 研究库</h2>
     <div class="filter-panel">
@@ -769,10 +777,20 @@ function renderHotTopics() {
 }
 
 /* 深度研究 —— 指定主题 */
+function renderDeepTopics() {
+  const container = $('#deepTopics');
+  const deepOrder = [3,2,16,10]; /* 智能经济, 十五五, 固收量化, 资产配置方法论 */
+  const topics = TOPICS.filter(t => deepOrder.includes(t.id)).sort((a,b) => deepOrder.indexOf(a.id) - deepOrder.indexOf(b.id));
+  const section = $('#deepSection');
+  if (topics.length === 0) { section.style.display = 'none'; return; }
+  section.style.display = '';
+  renderTopicCards(container, topics);
+}
+
+/* 新增主题 —— isNew:true */
 function renderNewTopics() {
   const container = $('#newTopics');
-  const newOrder = [3,2,16,10]; /* 智能经济, 十五五, 固收量化, 资产配置方法论 */
-  const topics = TOPICS.filter(t => newOrder.includes(t.id)).sort((a,b) => newOrder.indexOf(a.id) - newOrder.indexOf(b.id));
+  const topics = TOPICS.filter(t => t.isNew);
   const section = $('#newSection');
   if (topics.length === 0) { section.style.display = 'none'; return; }
   section.style.display = '';
@@ -1096,6 +1114,7 @@ backToTop.addEventListener('click', () => {
 function init() {
   renderTeam();
   renderHotTopics();
+  renderDeepTopics();
   renderNewTopics();
   setupHotScroll();
   renderCategoryTags();
@@ -1106,9 +1125,9 @@ function init() {
   const ft = document.querySelector('.filter-tags');
   if (fs) makeScrollable(fs);
   if (ft) makeScrollable(ft);
-  /* 新增主题也横向滚动 */
-  const nt = $('#newTopics');
-  if (nt) makeScrollable(nt);
+  /* 新增/深度也横向滚动 */
+  const nt = $('#newTopics'); if (nt) makeScrollable(nt);
+  const dt = $('#deepTopics'); if (dt) makeScrollable(dt);
 }
 init();
 </script>
