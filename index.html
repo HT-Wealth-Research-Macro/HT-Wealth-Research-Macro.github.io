@@ -211,15 +211,13 @@ img{max-width:100%;display:block}
   flex:0 0 auto;width:200px;min-width:170px;scroll-snap-align:start;
   background:var(--white);border-radius:var(--radius-sm);padding:14px;
   box-shadow:var(--shadow-sm);cursor:pointer;transition:border-color .2s,background .2s;
-  border:2px solid var(--blue-100);user-select:none;
+  border:2px solid var(--amber-100);user-select:none;
   position:relative;overflow:visible;
   display:flex;align-items:flex-start;gap:10px;
 }
-@media(hover:hover){.hot-card:hover{border-color:var(--blue-200)}}
-.hot-card.active{border-color:var(--blue);background:var(--blue-50)}
-/* NEW：浅橙边框 → 选中深橙 */
-.hot-card.new{border-color:var(--amber-100)}
-.hot-card.new.active{border-color:var(--amber);background:var(--amber-50)}
+@media(hover:hover){.hot-card:hover{border-color:var(--amber-200)}}
+.hot-card.active{border-color:var(--amber);background:var(--amber-50)}
+.hot-cat-label{font-size:.7rem;font-weight:600;color:var(--amber);margin-right:2px}
 .hot-new-icon{
   font-size:.6rem;font-weight:800;letter-spacing:.04em;
   color:#FFF;background:var(--amber);
@@ -387,11 +385,10 @@ img{max-width:100%;display:block}
 .topic-card .ctag.cat{background:var(--blue-50);color:var(--blue);font-weight:600}
 
 /* Category accent bar colors */
-.topic-card[data-cat="宏观经济"]{border-left-color:#1A4BD1}
+.topic-card[data-cat="宏观"]{border-left-color:#1A4BD1}
 .topic-card[data-cat="资产配置"]{border-left-color:#7C3AED}
-.topic-card[data-cat="固定收益"]{border-left-color:#059669}
+.topic-card[data-cat="债券"]{border-left-color:#059669}
 .topic-card[data-cat="海外宏观"]{border-left-color:#0E7490}
-.topic-card[data-cat="可转债"]{border-left-color:#D97706}
 .topic-card.is-new{border-left-color:var(--amber)!important}
 
 /* ===== 建议分隔线 ===== */
@@ -601,43 +598,42 @@ const RESEARCHERS = [
 ];
 
 const CATEGORIES = [
-  '宏观经济','资产配置','固定收益','海外宏观','可转债',
+  '宏观','海外宏观','资产配置','债券',
 ];
 
 /* 热门主题 —— 直接取自路演数据中标记 hot:true 的主题 */
 
 /* 主题卡片数据 —— 按细分赛道/环节分类 */
 const TOPICS = [
-  /* ===== 宏观经济 ===== */
-  {id:1, title:'2026年夏季宏观经济展望：结构重塑，周期换轨',speakers:['hexin'],category:'宏观经济',subTags:['1对1','1对多','内部培训'],date:'2026-07',hot:true},
-  {id:2, title:'价值回归：2026人民币汇率升值新周期',speakers:['hexin'],category:'宏观经济',subTags:['1对1','1对多','内部培训'],date:'2026-07',hot:true},
-  {id:3, title:'重构增长长极：十五五规划建议解读',speakers:['hexin'],category:'宏观经济',subTags:['1对1','1对多','内部培训'],date:'2026-07',hot:true},
-  {id:4, title:'专题：中国企业出海之路：成就与挑战',speakers:['hexin'],category:'宏观经济',subTags:['1对1','1对多','内部培训'],date:'2026-06',hot:false},
-
-  /* ===== 资产配置 ===== */
-  {id:5, title:'2026年夏季宏观经济与资产配置展望——拥挤退潮，回归本源',speakers:['hexin','chenzezhen'],category:'资产配置',subTags:['1对1','1对多'],date:'2026-07',hot:true},
-  {id:6, title:'2026年夏季外汇市场展望：下半年全球汇率走势与多币种配置图谱',speakers:['hexin','chenzezhen'],category:'资产配置',subTags:['1对1','1对多'],date:'2026-07',hot:true},
-  {id:7, title:'专题："固收+"产品资产配置分析',speakers:['hexin','chenzezhen'],category:'资产配置',subTags:['1对1','1对多'],date:'2026-07',hot:false,isNew:true},
-  {id:8, title:'专题：资产配置方法论专题',speakers:['hexin','chenzezhen'],category:'资产配置',subTags:['1对1','1对多'],date:'2026-06',hot:false},
-  {id:9, title:'专题：低利率下的绝对收益路径',speakers:['hexin','chenzezhen'],category:'资产配置',subTags:['1对1','1对多'],date:'2026-05',hot:false},
+  /* ===== 宏观 ===== */
+  {id:1, title:'2026年秋季宏观经济展望：结构重塑期，秋日胜春朝',speakers:['hexin','chenzezhen'],category:'宏观',subTags:['1对1','1对多','内部培训'],date:'2026-08',hot:true},
+  {id:2, title:'重构增长极：十五五规划建议解读',speakers:['hexin','chenzezhen'],category:'宏观',subTags:['1对1','1对多','内部培训'],date:'2026-08',hot:true},
+  {id:3, title:'专题：智能经济学：AI如何改变未来',speakers:['hexin','chenzezhen'],category:'宏观',subTags:['1对1','1对多','内部培训'],date:'2026-08',hot:true},
+  {id:4, title:'价值回归：2026人民币汇率升值新周期',speakers:['hexin','chenzezhen'],category:'宏观',subTags:['1对1','1对多','内部培训'],date:'2026-08',hot:false},
+  {id:5, title:'专题：中国企业出海之路：成就与挑战',speakers:['hexin','chenzezhen'],category:'宏观',subTags:['1对1','1对多','内部培训'],date:'2026-08',hot:false},
 
   /* ===== 海外宏观 ===== */
-  {id:10, title:'2026年夏季全球宏观经济展望：扩张与重构',speakers:['hexin'],category:'海外宏观',subTags:['1对1','1对多','内部培训'],date:'2026-07',hot:true},
-  {id:11, title:'2026年国际关系分析：潮汐的回旋',speakers:['hexin'],category:'海外宏观',subTags:['1对1','1对多','内部培训'],date:'2026-07',hot:true},
+  {id:6, title:'2026年秋季全球宏观经济展望：多事之秋',speakers:['hexin','chenzezhen'],category:'海外宏观',subTags:['1对1','1对多','内部培训'],date:'2026-08',hot:true},
+  {id:7, title:'2026年国际关系分析：潮汐的回旋',speakers:['hexin','chenzezhen'],category:'海外宏观',subTags:['1对1','1对多','内部培训'],date:'2026-08',hot:false},
 
-  /* ===== 债券/固定收益 ===== */
-  {id:12, title:'2026年夏季债券市场投资展望——承转徐行，蛰伏反击',speakers:['hexin','chenzezhen'],category:'固定收益',subTags:['1对1','1对多'],date:'2026-07',hot:true},
-  {id:13, title:'2026年夏季美债市场展望——经济过热，政策反转',speakers:['hexin','chenzezhen'],category:'固定收益',subTags:['1对1','1对多'],date:'2026-07',hot:true},
-  {id:14, title:'专题：化债下半场：从"政策信仰"到"分化重估"',speakers:['hexin','chenzezhen'],category:'固定收益',subTags:['1对1','1对多'],date:'2026-06',hot:false},
-  {id:15, title:'专题：信用债ETF产品手册：信用债ETF分析与筛选方法',speakers:['hexin','chenzezhen'],category:'固定收益',subTags:['1对1','1对多'],date:'2026-06',hot:false},
-  {id:16, title:'专题：REITs市场主题分享——资产供给跃进',speakers:['hexin','chenzezhen'],category:'固定收益',subTags:['1对1','1对多'],date:'2026-05',hot:false},
-  {id:17, title:'专题：国债期货框架分析与市场研判（基础框架、期现关系、策略分析）',speakers:['hexin','chenzezhen'],category:'固定收益',subTags:['1对1','1对多'],date:'2026-05',hot:false},
-  {id:18, title:'专题：固收量化入门指南——如何精确预测债券市场利率走势',speakers:['hexin','chenzezhen'],category:'固定收益',subTags:['1对1','1对多'],date:'2026-07',hot:false,isNew:true},
+  /* ===== 资产配置 ===== */
+  {id:8, title:'2026年秋季宏观经济与资产配置展望——拥挤退潮，回归本源',speakers:['hexin','chenzezhen'],category:'资产配置',subTags:['1对1','1对多'],date:'2026-08',hot:true},
+  {id:9, title:'专题："固收+"产品资产配置分析',speakers:['hexin','chenzezhen'],category:'资产配置',subTags:['1对1','1对多'],date:'2026-08',hot:true,isNew:true},
+  {id:10, title:'专题：资产配置方法论专题',speakers:['hexin','chenzezhen'],category:'资产配置',subTags:['1对1','1对多'],date:'2026-08',hot:false,isNew:true},
+  {id:11, title:'2026年秋季外汇市场展望：下半年全球汇率走势与多币种配置图谱',speakers:['hexin','chenzezhen'],category:'资产配置',subTags:['1对1','1对多'],date:'2026-08',hot:false},
+  {id:12, title:'专题：低利率下的绝对收益路径',speakers:['hexin','chenzezhen'],category:'资产配置',subTags:['1对1','1对多'],date:'2026-08',hot:false},
 
-  /* ===== 可转债 ===== */
-  {id:19, title:'2026年夏季可转债市场配置与择券策略：配置价值不足，仅存交易价值',speakers:['hexin','chenzezhen'],category:'可转债',subTags:['1对1','1对多'],date:'2026-07',hot:false},
-  {id:20, title:'专题：零起步投资可转债（转债基础框架、资产特性、配置策略）',speakers:['hexin','chenzezhen'],category:'可转债',subTags:['1对1','1对多'],date:'2026-05',hot:false},
-  {id:21, title:'专题：可转债信用风波启示录',speakers:['hexin','chenzezhen'],category:'可转债',subTags:['1对1','1对多','内部培训'],date:'2026-04',hot:false},
+  /* ===== 债券 ===== */
+  {id:13, title:'专题：固收量化入门指南-如何精确预测债券市场利率走势',speakers:['hexin','chenzezhen'],category:'债券',subTags:['1对1','1对多'],date:'2026-08',hot:true,isNew:true},
+  {id:14, title:'2026年秋季债券市场投资展望——承转徐行，蛰伏反击',speakers:['hexin','chenzezhen'],category:'债券',subTags:['1对1','1对多'],date:'2026-08',hot:false},
+  {id:15, title:'2026年秋季美债市场展望——经济过热，政策反转',speakers:['hexin','chenzezhen'],category:'债券',subTags:['1对1','1对多'],date:'2026-08',hot:false},
+  {id:16, title:'2026年秋季可转债市场配置与择券策略：配置价值不足，仅存交易价值',speakers:['hexin','chenzezhen'],category:'债券',subTags:['1对1','1对多'],date:'2026-08',hot:false},
+  {id:17, title:'专题：化债下半场：从"政策信仰"到"分化重估"',speakers:['hexin','chenzezhen'],category:'债券',subTags:['1对1','1对多'],date:'2026-08',hot:false},
+  {id:18, title:'专题：信用债ETF产品手册：信用债ETF分析与筛选方法',speakers:['hexin','chenzezhen'],category:'债券',subTags:['1对1','1对多'],date:'2026-08',hot:false},
+  {id:19, title:'专题：REITS市场主题分享——资产供给跃进',speakers:['hexin','chenzezhen'],category:'债券',subTags:['1对1','1对多'],date:'2026-08',hot:false},
+  {id:20, title:'专题：国债期货框架分析与市场研判（基础框架、期现关系、策略分析）',speakers:['hexin','chenzezhen'],category:'债券',subTags:['1对1','1对多'],date:'2026-08',hot:false},
+  {id:21, title:'专题：零起步投资可转债（转债基础框架、资产特性、配置策略）',speakers:['hexin','chenzezhen'],category:'债券',subTags:['1对1','1对多'],date:'2026-08',hot:false},
+  {id:22, title:'专题：可转债信用风波启示录',speakers:['hexin','chenzezhen'],category:'债券',subTags:['1对1','1对多','内部培训'],date:'2026-08',hot:false},
 ];
 
 /* ===================================================================
@@ -779,11 +775,11 @@ function renderNewTopics() {
 
 /* 通用：渲染热门/新增卡片 */
 function renderTopicCards(container, topics) {
-  const catIcons = { '宏观经济':'📊', '资产配置':'📈', '固定收益':'💰', '海外宏观':'🌐', '可转债':'🔄' };
+  const catIcons = { '宏观':'📊', '海外宏观':'🌐', '资产配置':'📈', '债券':'💰' };
   container.innerHTML = topics.map(t => `
     <div class="hot-card${t.isNew ? ' new' : ''}" data-id="${t.id}" data-cat="${t.category}">
       <div class="hot-icon">${t.isNew ? '<span class="hot-new-icon">NEW</span>' : (catIcons[t.category] || '📌')}</div>
-      <div class="hot-theme">${t.title}</div>
+      <div class="hot-theme"><span class="hot-cat-label">【${t.category}】</span>${t.title}</div>
     </div>
   `).join('');
 
