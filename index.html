@@ -389,7 +389,7 @@ img{max-width:100%;display:block}
 .topic-card[data-cat="资产配置"]{border-left-color:#7C3AED}
 .topic-card[data-cat="固收"]{border-left-color:#059669}
 .topic-card[data-cat="海外宏观"]{border-left-color:#0E7490}
-.topic-card[data-cat="可转债"]{border-left-color:#D97706}
+.topic-card[data-cat="可转债"]{border-left-color:#DB2777}
 .topic-card.is-new{border-left-color:var(--amber)!important}
 
 /* ===== 建议分隔线 ===== */
@@ -599,7 +599,7 @@ const RESEARCHERS = [
 ];
 
 const CATEGORIES = [
-  '宏观','海外宏观','资产配置','固收','可转债',
+  '宏观','海外宏观','资产配置','可转债','固收',
 ];
 
 /* 热门主题 —— 直接取自路演数据中标记 hot:true 的主题 */
@@ -624,17 +624,19 @@ const TOPICS = [
   {id:11, title:'2026年秋季外汇市场展望：下半年全球汇率走势与多币种配置图谱',speakers:['hexin','chenzezhen'],category:'资产配置',subTags:['1对1','1对多'],date:'2026-08',hot:false},
   {id:12, title:'专题：低利率下的绝对收益路径',speakers:['hexin','chenzezhen'],category:'资产配置',subTags:['1对1','1对多'],date:'2026-08',hot:false},
 
-  /* ===== 债券 ===== */
-  {id:13, title:'专题：固收量化入门指南-如何精确预测债券市场利率走势',speakers:['hexin','chenzezhen'],category:'固收',subTags:['1对1','1对多'],date:'2026-08',hot:true,isNew:true},
-  {id:14, title:'2026年秋季债券市场投资展望——承转徐行，蛰伏反击',speakers:['hexin','chenzezhen'],category:'固收',subTags:['1对1','1对多'],date:'2026-08',hot:false},
-  {id:15, title:'2026年秋季美债市场展望——经济过热，政策反转',speakers:['hexin','chenzezhen'],category:'固收',subTags:['1对1','1对多'],date:'2026-08',hot:false},
-  {id:16, title:'2026年秋季可转债市场配置与择券策略：配置价值不足，仅存交易价值',speakers:['hexin','chenzezhen'],category:'可转债',subTags:['1对1','1对多'],date:'2026-08',hot:false},
-  {id:17, title:'专题：化债下半场：从"政策信仰"到"分化重估"',speakers:['hexin','chenzezhen'],category:'固收',subTags:['1对1','1对多'],date:'2026-08',hot:false},
-  {id:18, title:'专题：信用债ETF产品手册：信用债ETF分析与筛选方法',speakers:['hexin','chenzezhen'],category:'固收',subTags:['1对1','1对多'],date:'2026-08',hot:false},
-  {id:19, title:'专题：REITS市场主题分享——资产供给跃进',speakers:['hexin','chenzezhen'],category:'固收',subTags:['1对1','1对多'],date:'2026-08',hot:false},
-  {id:20, title:'专题：国债期货框架分析与市场研判（基础框架、期现关系、策略分析）',speakers:['hexin','chenzezhen'],category:'固收',subTags:['1对1','1对多'],date:'2026-08',hot:false},
-  {id:21, title:'专题：零起步投资可转债（转债基础框架、资产特性、配置策略）',speakers:['hexin','chenzezhen'],category:'可转债',subTags:['1对1','1对多'],date:'2026-08',hot:false},
-  {id:22, title:'专题：可转债信用风波启示录',speakers:['hexin','chenzezhen'],category:'可转债',subTags:['1对1','1对多','内部培训'],date:'2026-08',hot:false},
+  /* ===== 可转债 ===== */
+  {id:13, title:'2026年秋季可转债市场配置与择券策略：配置价值不足，仅存交易价值',speakers:['hexin','chenzezhen'],category:'可转债',subTags:['1对1','1对多'],date:'2026-08',hot:false},
+  {id:14, title:'专题：零起步投资可转债（转债基础框架、资产特性、配置策略）',speakers:['hexin','chenzezhen'],category:'可转债',subTags:['1对1','1对多'],date:'2026-08',hot:false},
+  {id:15, title:'专题：可转债信用风波启示录',speakers:['hexin','chenzezhen'],category:'可转债',subTags:['1对1','1对多','内部培训'],date:'2026-08',hot:false},
+
+  /* ===== 固收 ===== */
+  {id:16, title:'专题：固收量化入门指南-如何精确预测债券市场利率走势',speakers:['hexin','chenzezhen'],category:'固收',subTags:['1对1','1对多'],date:'2026-08',hot:true,isNew:true},
+  {id:17, title:'2026年秋季债券市场投资展望——承转徐行，蛰伏反击',speakers:['hexin','chenzezhen'],category:'固收',subTags:['1对1','1对多'],date:'2026-08',hot:false},
+  {id:18, title:'2026年秋季美债市场展望——经济过热，政策反转',speakers:['hexin','chenzezhen'],category:'固收',subTags:['1对1','1对多'],date:'2026-08',hot:false},
+  {id:19, title:'专题：化债下半场：从"政策信仰"到"分化重估"',speakers:['hexin','chenzezhen'],category:'固收',subTags:['1对1','1对多'],date:'2026-08',hot:false},
+  {id:20, title:'专题：信用债ETF产品手册：信用债ETF分析与筛选方法',speakers:['hexin','chenzezhen'],category:'固收',subTags:['1对1','1对多'],date:'2026-08',hot:false},
+  {id:21, title:'专题：REITS市场主题分享——资产供给跃进',speakers:['hexin','chenzezhen'],category:'固收',subTags:['1对1','1对多'],date:'2026-08',hot:false},
+  {id:22, title:'专题：国债期货框架分析与市场研判（基础框架、期现关系、策略分析）',speakers:['hexin','chenzezhen'],category:'固收',subTags:['1对1','1对多'],date:'2026-08',hot:false},
 ];
 
 /* ===================================================================
