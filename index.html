@@ -624,11 +624,12 @@ const TOPICS = [
 
   /* ===== 海外宏观 ===== */
   {id:6, title:'2026年秋季全球宏观经济展望：多事之秋',speakers:['hexin','chenzezhen'],category:'全球宏观',subTags:['1对1','1对多','内部培训'],date:'2026-08',hot:true},
+  {id:9, title:'专题："骨太冲击"下的日本前景与资产展望',speakers:['hexin','chenzezhen'],category:'全球宏观',subTags:['1对1','1对多','内部培训'],date:'2026-08',hot:true},
   {id:7, title:'2026年国际关系分析：潮汐的回旋',speakers:['hexin','chenzezhen'],category:'国际关系',subTags:['1对1','1对多','内部培训'],date:'2026-08',hot:true},
 
   /* ===== 资产配置 ===== */
   {id:8, title:'2026年秋季宏观经济与资产配置展望——拥挤退潮，回归本源',speakers:['hexin','chenzezhen'],category:'资产配置',subTags:['1对1','1对多','内部培训'],date:'2026-08',hot:true},
-  {id:9, title:'专题："骨太冲击"下的日本前景与资产展望',speakers:['hexin','chenzezhen'],category:'全球宏观',subTags:['1对1','1对多','内部培训'],date:'2026-08',hot:true},
+  {id:23, title:'专题："固收+"产品资产配置分析',speakers:['hexin','chenzezhen'],category:'资产配置',subTags:['1对1','1对多','内部培训'],date:'2026-08',hot:false},
   {id:10, title:'专题：资产配置方法论专题',speakers:['hexin','chenzezhen'],category:'资产配置',subTags:['1对1','1对多','内部培训'],date:'2026-08',hot:false,isNew:true},
   {id:11, title:'2026年秋季外汇市场展望：下半年全球汇率走势与多币种配置图谱',speakers:['hexin','chenzezhen'],category:'资产配置',subTags:['1对1','1对多','内部培训'],date:'2026-08',hot:false},
   {id:12, title:'专题：低利率下的绝对收益路径',speakers:['hexin','chenzezhen'],category:'资产配置',subTags:['1对1','1对多','内部培训'],date:'2026-08',hot:false},
@@ -772,7 +773,10 @@ function renderTeam() {
 function renderHotTopics() {
   const container = $('#hotTopics');
   const hotOrder = ['资产配置','宏观经济','全球宏观','国际关系'];
-  const topics = TOPICS.filter(t => t.hot).sort((a,b) => hotOrder.indexOf(a.category) - hotOrder.indexOf(b.category));
+  let topics = TOPICS.filter(t => t.hot).sort((a,b) => hotOrder.indexOf(a.category) - hotOrder.indexOf(b.category));
+  /* 骨太冲击 单独放第二条 */
+  const idx9 = topics.findIndex(t => t.id === 9);
+  if (idx9 > 1) { const t9 = topics.splice(idx9,1)[0]; topics.splice(1,0,t9); }
   renderTopicCards(container, topics);
 }
 
