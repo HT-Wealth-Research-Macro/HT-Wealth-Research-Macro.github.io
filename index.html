@@ -237,19 +237,22 @@ img{max-width:100%;display:block}
 /* 标题弹窗 —— 居中显示全名 */
 .hot-title-popup{
   position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
-  background:var(--white);color:var(--gray-900);font-size:.85rem;line-height:1.6;
-  padding:20px 22px 14px;border-radius:var(--radius);width:320px;max-width:90vw;
+  background:var(--gray-900);color:#FFF;font-size:.85rem;line-height:1.6;
+  padding:24px 22px 20px;border-radius:var(--radius);width:320px;max-width:90vw;
   opacity:0;visibility:hidden;transition:opacity .25s,visibility .25s;z-index:99999;
-  text-align:left;font-weight:500;pointer-events:auto;
-  box-shadow:0 16px 48px rgba(0,0,0,.3);
+  text-align:left;font-weight:400;pointer-events:auto;
+  box-shadow:0 16px 48px rgba(0,0,0,.4);
 }
-.hot-title-popup .ht-close{
-  display:block;text-align:center;margin-top:12px;padding:6px;
-  font-size:.72rem;color:var(--blue);font-weight:600;cursor:pointer;
-  border-top:1px solid var(--gray-100);
+/* ✕ 关闭 */
+.hot-title-popup .ht-x{
+  position:absolute;top:6px;right:8px;
+  width:28px;height:28px;border:none;background:transparent;
+  color:rgba(255,255,255,.5);font-size:1rem;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  border-radius:50%;transition:all .15s;z-index:1;
+  line-height:1;padding:0;
 }
-.hot-card.title-visible .hot-title-popup{opacity:1;visibility:visible}
-.hot-card.title-visible{z-index:99998;position:relative}
+.hot-title-popup .ht-x:hover{background:rgba(255,255,255,.1);color:#FFF}
 
 /* ===== Search & Filter Panel ===== */
 .filter-panel{
@@ -589,6 +592,8 @@ img{max-width:100%;display:block}
 <!-- Toast -->
 <div class="toast" id="toast"></div>
 
+<!-- 标题弹窗 -->
+<div class="hot-title-popup" id="titlePopup"></div>
 <!-- Back to Top -->
 <button class="back-to-top" id="backToTop" title="回到顶部">↑</button>
 
@@ -831,29 +836,29 @@ function renderTopicCards(container, topics, showNewBadge = false) {
       <div class="hot-icon">${(showNewBadge && t.isNew) ? '<span class="hot-new-icon">NEW</span>' : (catIcons[t.category] || '📌')}</div>
       <div class="hot-theme"><span class="hot-cat-label">【${t.category}】</span>${t.title}</div>
       <span class="hot-info-btn" data-id="${t.id}">ⓘ</span>
-      <div class="hot-title-popup">${t.title}<div class="ht-close">轻触此处关闭</div></div>
     </div>
   `).join('');
 
-  /* ⓘ 按钮：展开完整标题 */
-  function closeTitlePopups() {
-    document.querySelectorAll('.hot-card.title-visible').forEach(c => c.classList.remove('title-visible'));
+  /* ⓘ 按钮：显示全局弹窗 */
+  function showTitlePopup(title) {
+    const popup = $('#titlePopup');
+    popup.innerHTML = '<button class=\"ht-x\" id=\"htCloseX\">✕</button>' + title;
+    popup.style.opacity = '1';
+    popup.style.visibility = 'visible';
+    document.getElementById('htCloseX').addEventListener('click', e => {
+      e.stopPropagation();
+      popup.style.opacity = '0';
+      popup.style.visibility = 'hidden';
+    });
   }
   container.querySelectorAll('.hot-info-btn').forEach(btn => {
     btn.addEventListener('click', e => {
       e.stopPropagation();
-      const card = btn.closest('.hot-card');
-      const was = card.classList.contains('title-visible');
-      closeTitlePopups();
-      if (!was) card.classList.add('title-visible');
+      const tid = parseInt(btn.dataset.id);
+      const topic = TOPICS.find(t => t.id === tid);
+      if (topic) showTitlePopup(topic.title);
     });
   });
-  /* 点弹窗关闭按钮 */
-  container.querySelectorAll('.ht-close').forEach(el => {
-    el.addEventListener('click', e => { e.stopPropagation(); closeTitlePopups(); });
-  });
-  /* 点其他地方关 */
-  document.addEventListener('click', closeTitlePopups);
 
   container.querySelectorAll('.hot-card').forEach(card => {
     card.addEventListener('click', () => {
