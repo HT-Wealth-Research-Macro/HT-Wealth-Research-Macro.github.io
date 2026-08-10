@@ -208,7 +208,7 @@ img{max-width:100%;display:block}
 .hot-scroll::-webkit-scrollbar-thumb{background:var(--gray-200);border-radius:2px}
 .hot-scroll:hover::-webkit-scrollbar-thumb{background:var(--gray-300)}
 .hot-card{
-  flex:0 0 auto;width:230px;min-width:190px;scroll-snap-align:start;
+  flex:0 0 auto;width:200px;min-width:170px;scroll-snap-align:start;
   background:var(--white);border-radius:var(--radius-sm);padding:14px;
   box-shadow:var(--shadow-sm);cursor:pointer;transition:border-color .2s,background .2s;
   border:2px solid var(--amber-100);user-select:none;
@@ -226,8 +226,29 @@ img{max-width:100%;display:block}
 }
 .hot-card .hot-icon{font-size:1.2rem;flex-shrink:0;margin-top:4px}
 .hot-card .hot-theme{font-size:.78rem;font-weight:600;color:var(--gray-900);line-height:1.4;
-  display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;
+  display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;
 }
+/* ⓘ 按钮 */
+.hot-info-btn{
+  position:absolute;top:4px;right:6px;font-size:.7rem;color:var(--gray-400);
+  cursor:pointer;line-height:1;padding:2px;transition:color .15s;
+}
+.hot-info-btn:hover{color:var(--blue)}
+/* 标题弹窗 —— 居中显示全名 */
+.hot-title-popup{
+  position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
+  background:var(--white);color:var(--gray-900);font-size:.85rem;line-height:1.6;
+  padding:20px 22px 14px;border-radius:var(--radius);width:320px;max-width:90vw;
+  opacity:0;visibility:hidden;transition:opacity .25s,visibility .25s;z-index:10001;
+  text-align:left;font-weight:500;pointer-events:auto;
+  box-shadow:0 16px 48px rgba(0,0,0,.3);
+}
+.hot-title-popup .ht-close{
+  display:block;text-align:center;margin-top:12px;padding:6px;
+  font-size:.72rem;color:var(--blue);font-weight:600;cursor:pointer;
+  border-top:1px solid var(--gray-100);
+}
+.hot-card.title-visible .hot-title-popup{opacity:1;visibility:visible}
 
 /* ===== Search & Filter Panel ===== */
 .filter-panel{
@@ -798,38 +819,7 @@ function renderNewTopics() {
   const section = $('#newSection');
   if (topics.length === 0) { section.style.display = 'none'; return; }
   section.style.display = '';
-  container.innerHTML = topics.map(t => `
-    <div class="hot-card new" data-id="${t.id}" data-cat="${t.category}">
-      <div class="hot-icon"><span class="hot-new-icon">NEW</span></div>
-      <div class="hot-theme"><span class="hot-cat-label">【${t.category}】</span>${t.title}</div>
-    </div>
-  `).join('');
-  container.querySelectorAll('.hot-card').forEach(card => {
-    card.addEventListener('click', () => {
-      const cat = card.dataset.cat;
-      const tid = parseInt(card.dataset.id);
-      const topic = TOPICS.find(t => t.id === tid);
-      if (!topic) return;
-      const wasActive = card.classList.contains('active');
-      document.querySelectorAll('.hot-card.active').forEach(c => c.classList.remove('active'));
-      if (wasActive) {
-        state.selectedCategories.clear();
-        state.hotPinnedId = null;
-        showToast('已取消筛选');
-      } else {
-        card.classList.add('active');
-        state.selectedCategories.clear();
-        state.selectedCategories.add(cat);
-        state.hotPinnedId = tid;
-        showToast('已筛选：' + cat);
-      }
-      state.searchQuery = '';
-      $('#searchInput').value = '';
-      renderCategoryTags();
-      resetAndRender();
-      appendSuggestions(topic);
-    });
-  });
+  renderTopicCards(container, topics);
 }
 
 /* 通用：渲染热门/新增卡片 */
@@ -839,8 +829,30 @@ function renderTopicCards(container, topics) {
     <div class="hot-card${t.isNew ? ' new' : ''}" data-id="${t.id}" data-cat="${t.category}">
       <div class="hot-icon">${catIcons[t.category] || '📌'}</div>
       <div class="hot-theme"><span class="hot-cat-label">【${t.category}】</span>${t.title}</div>
+      <span class="hot-info-btn" data-id="${t.id}">ⓘ</span>
+      <div class="hot-title-popup">${t.title}<div class="ht-close">轻触此处关闭</div></div>
     </div>
   `).join('');
+
+  /* ⓘ 按钮：展开完整标题 */
+  function closeTitlePopups() {
+    document.querySelectorAll('.hot-card.title-visible').forEach(c => c.classList.remove('title-visible'));
+  }
+  container.querySelectorAll('.hot-info-btn').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      const card = btn.closest('.hot-card');
+      const was = card.classList.contains('title-visible');
+      closeTitlePopups();
+      if (!was) card.classList.add('title-visible');
+    });
+  });
+  /* 点弹窗关闭按钮 */
+  container.querySelectorAll('.ht-close').forEach(el => {
+    el.addEventListener('click', e => { e.stopPropagation(); closeTitlePopups(); });
+  });
+  /* 点其他地方关 */
+  document.addEventListener('click', closeTitlePopups);
 
   container.querySelectorAll('.hot-card').forEach(card => {
     card.addEventListener('click', () => {
