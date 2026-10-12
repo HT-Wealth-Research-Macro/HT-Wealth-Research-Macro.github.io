@@ -228,6 +228,31 @@ img{max-width:100%;display:block}
 .hot-card .hot-theme{font-size:.78rem;font-weight:600;color:var(--gray-900);line-height:1.4;
   display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;
 }
+/* ⓘ 按钮 */
+.hot-info-btn{
+  position:absolute;bottom:4px;right:6px;font-size:.7rem;color:var(--gray-400);
+  cursor:pointer;line-height:1;padding:2px;transition:color .15s;
+}
+.hot-info-btn:hover{color:var(--blue)}
+/* 标题弹窗 —— 居中显示全名 */
+.hot-title-popup{
+  position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
+  background:var(--gray-900);color:#FFF;font-size:.85rem;line-height:1.6;
+  padding:24px 22px 20px;border-radius:var(--radius);width:320px;max-width:90vw;
+  opacity:0;visibility:hidden;transition:opacity .25s,visibility .25s;z-index:99999;
+  text-align:left;font-weight:400;pointer-events:auto;
+  box-shadow:0 16px 48px rgba(0,0,0,.4);
+}
+/* ✕ 关闭 */
+.hot-title-popup .ht-x{
+  position:absolute;top:6px;right:8px;
+  width:28px;height:28px;border:none;background:transparent;
+  color:rgba(255,255,255,.5);font-size:1rem;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  border-radius:50%;transition:all .15s;z-index:1;
+  line-height:1;padding:0;
+}
+.hot-title-popup .ht-x:hover{background:rgba(255,255,255,.1);color:#FFF}
 
 /* ===== Search & Filter Panel ===== */
 .filter-panel{
@@ -567,6 +592,8 @@ img{max-width:100%;display:block}
 <!-- Toast -->
 <div class="toast" id="toast"></div>
 
+<!-- 标题弹窗 -->
+<div class="hot-title-popup" id="titlePopup"></div>
 <!-- Back to Top -->
 <button class="back-to-top" id="backToTop" title="回到顶部">↑</button>
 
@@ -588,7 +615,7 @@ const RESEARCHERS = [
     id: 'hexin',
     name: '何欣',
     title: '首席研究员 · CFA',
-    bio: '经济学硕士，20余年宏观、固收、大类资产研究经验，擅长从宏观理论与周期观察出发，对资本市场周期性波动和长期趋势进行预测，形成大类资产配置策略。曾多次入选新财富、水晶球、金牛奖、第一财经等最佳分析师评选。',
+    bio: '经济学硕士，现任华泰证券研究所财富研究宏观固收首席研究员。从事宏观和固定收益的投研和管理工作20余年，历经数轮金融周期洗礼，擅长以“宏观定位+微观估值校验”的双向穿透框架，挖掘跨资产间的配置逻辑。2005～2013年多次入选新财富、水晶球、金牛、第一财经等最佳分析师，2011年入选香港《财资》杂志本土最佳分析师。',
     avatar: 'HeXin.png',
   },
   {
@@ -602,7 +629,7 @@ const RESEARCHERS = [
     id: 'xiaoxi',
     name: '肖熙',
     title: '研究员',
-    bio: '本科就读于香港大学经济和金融学专业，硕士毕业于香港大学经济学专业，具备扎实的宏观经济与金融分析框架，具有良好的数据处理与逻辑分析能力，专注宏观、固收、大类资产方向研究。',
+    bio: '本科就读于香港大学经济和金融学专业，硕士毕业于香港大学金融学专业，具备扎实的宏观经济与金融分析框架，具有良好的数据处理与逻辑分析能力，专注宏观、固收、大类资产方向研究。',
     avatar: 'XiaoXi.png',
   },
 ];
@@ -624,12 +651,12 @@ const TOPICS = [
 
   /* ===== 海外宏观 ===== */
   {id:6, title:'2026年秋季全球宏观经济展望：多事之秋',speakers:['hexin','chenzezhen'],category:'全球宏观',subTags:['1对1','1对多','内部培训'],date:'2026-08',hot:true},
-  {id:23, title:'"骨太冲击"下的日本前景与资产展望',speakers:['hexin','chenzezhen'],category:'全球宏观',subTags:['1对1','1对多','内部培训'],date:'2026-08',hot:false},
+  {id:9, title:'专题："骨太冲击"下的日本前景与资产展望',speakers:['hexin','chenzezhen'],category:'全球宏观',subTags:['1对1','1对多','内部培训'],date:'2026-08',hot:true},
   {id:7, title:'2026年国际关系分析：潮汐的回旋',speakers:['hexin','chenzezhen'],category:'国际关系',subTags:['1对1','1对多','内部培训'],date:'2026-08',hot:true},
 
   /* ===== 资产配置 ===== */
   {id:8, title:'2026年秋季宏观经济与资产配置展望——拥挤退潮，回归本源',speakers:['hexin','chenzezhen'],category:'资产配置',subTags:['1对1','1对多','内部培训'],date:'2026-08',hot:true},
-  {id:9, title:'专题："固收+"产品资产配置分析',speakers:['hexin','chenzezhen'],category:'资产配置',subTags:['1对1','1对多','内部培训'],date:'2026-08',hot:true},
+  {id:23, title:'专题："固收+"产品资产配置分析',speakers:['hexin','chenzezhen'],category:'资产配置',subTags:['1对1','1对多','内部培训'],date:'2026-08',hot:false},
   {id:10, title:'专题：资产配置方法论专题',speakers:['hexin','chenzezhen'],category:'资产配置',subTags:['1对1','1对多','内部培训'],date:'2026-08',hot:false,isNew:true},
   {id:11, title:'2026年秋季外汇市场展望：下半年全球汇率走势与多币种配置图谱',speakers:['hexin','chenzezhen'],category:'资产配置',subTags:['1对1','1对多','内部培训'],date:'2026-08',hot:false},
   {id:12, title:'专题：低利率下的绝对收益路径',speakers:['hexin','chenzezhen'],category:'资产配置',subTags:['1对1','1对多','内部培训'],date:'2026-08',hot:false},
@@ -773,7 +800,10 @@ function renderTeam() {
 function renderHotTopics() {
   const container = $('#hotTopics');
   const hotOrder = ['资产配置','宏观经济','全球宏观','国际关系'];
-  const topics = TOPICS.filter(t => t.hot).sort((a,b) => hotOrder.indexOf(a.category) - hotOrder.indexOf(b.category));
+  let topics = TOPICS.filter(t => t.hot).sort((a,b) => hotOrder.indexOf(a.category) - hotOrder.indexOf(b.category));
+  /* 骨太冲击 单独放第二条 */
+  const idx9 = topics.findIndex(t => t.id === 9);
+  if (idx9 > 1) { const t9 = topics.splice(idx9,1)[0]; topics.splice(1,0,t9); }
   renderTopicCards(container, topics);
 }
 
@@ -795,49 +825,40 @@ function renderNewTopics() {
   const section = $('#newSection');
   if (topics.length === 0) { section.style.display = 'none'; return; }
   section.style.display = '';
-  container.innerHTML = topics.map(t => `
-    <div class="hot-card new" data-id="${t.id}" data-cat="${t.category}">
-      <div class="hot-icon"><span class="hot-new-icon">NEW</span></div>
-      <div class="hot-theme"><span class="hot-cat-label">【${t.category}】</span>${t.title}</div>
-    </div>
-  `).join('');
-  container.querySelectorAll('.hot-card').forEach(card => {
-    card.addEventListener('click', () => {
-      const cat = card.dataset.cat;
-      const tid = parseInt(card.dataset.id);
-      const topic = TOPICS.find(t => t.id === tid);
-      if (!topic) return;
-      const wasActive = card.classList.contains('active');
-      document.querySelectorAll('.hot-card.active').forEach(c => c.classList.remove('active'));
-      if (wasActive) {
-        state.selectedCategories.clear();
-        state.hotPinnedId = null;
-        showToast('已取消筛选');
-      } else {
-        card.classList.add('active');
-        state.selectedCategories.clear();
-        state.selectedCategories.add(cat);
-        state.hotPinnedId = tid;
-        showToast('已筛选：' + cat);
-      }
-      state.searchQuery = '';
-      $('#searchInput').value = '';
-      renderCategoryTags();
-      resetAndRender();
-      appendSuggestions(topic);
-    });
-  });
+  renderTopicCards(container, topics, true);
 }
 
 /* 通用：渲染热门/新增卡片 */
-function renderTopicCards(container, topics) {
+function renderTopicCards(container, topics, showNewBadge = false) {
   const catIcons = { '宏观经济':'📊', '全球宏观':'🌐', '国际关系':'🏛️', '资产配置':'📈', '可转债':'🔄', '固收研究':'💰' };
   container.innerHTML = topics.map(t => `
     <div class="hot-card${t.isNew ? ' new' : ''}" data-id="${t.id}" data-cat="${t.category}">
-      <div class="hot-icon">${catIcons[t.category] || '📌'}</div>
+      <div class="hot-icon">${(showNewBadge && t.isNew) ? '<span class="hot-new-icon">NEW</span>' : (catIcons[t.category] || '📌')}</div>
       <div class="hot-theme"><span class="hot-cat-label">【${t.category}】</span>${t.title}</div>
+      <span class="hot-info-btn" data-id="${t.id}">ⓘ</span>
     </div>
   `).join('');
+
+  /* ⓘ 按钮：显示全局弹窗 */
+  function showTitlePopup(title) {
+    const popup = $('#titlePopup');
+    popup.innerHTML = '<button class=\"ht-x\" id=\"htCloseX\">✕</button>' + title;
+    popup.style.opacity = '1';
+    popup.style.visibility = 'visible';
+    document.getElementById('htCloseX').addEventListener('click', e => {
+      e.stopPropagation();
+      popup.style.opacity = '0';
+      popup.style.visibility = 'hidden';
+    });
+  }
+  container.querySelectorAll('.hot-info-btn').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      const tid = parseInt(btn.dataset.id);
+      const topic = TOPICS.find(t => t.id === tid);
+      if (topic) showTitlePopup(topic.title);
+    });
+  });
 
   container.querySelectorAll('.hot-card').forEach(card => {
     card.addEventListener('click', () => {
